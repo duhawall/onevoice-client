@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import { TranscriptionComponent } from "./components/AssemblyAi.jsx";
 
 function App() {
