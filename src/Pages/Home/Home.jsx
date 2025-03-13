@@ -2,6 +2,7 @@ import "./Home.scss";
 import Footer from "../../Components/Footer/Footer";
 import Header from "../../Components/Header/Header";
 import React, { useState } from "react";
+import Logo from "../../assets/styles/Images/Icons/languages.png";
 
 function Home() {
   const [isRecording, setIsRecording] = useState(false);
@@ -14,16 +15,21 @@ function Home() {
       <Header />
       <div className="body">
         <div className="body__text">
+          <img
+            src={Logo}
+            className="body__text-logo"
+            alt="Globe language logo"
+          />
           <p className="body__text-description">
             No More Lost In Translation - AI That Speaks Your Accent!
           </p>
         </div>
-        <div className="action">
+        <div className="body__action">
           <button
-            className={`action_record ${isRecording ? "recording" : ""}`}
+            className={`body__action-record ${isRecording ? "recording" : ""}`}
             onClick={handleRecording}
           >
-            {isRecording ? "End Recording" : "Start Recording"}
+            {isRecording ? "END RECORDING" : "START RECORDING"}
           </button>
         </div>
       </div>

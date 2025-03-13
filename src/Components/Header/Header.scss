@@ -4,7 +4,12 @@
   align-items: center;
   padding: 2rem;
 
+  &__name-container {
+    width: 10rem;
+  }
+
   &__name {
+    padding-right: 1rem;
     font-weight: 600;
   }
 

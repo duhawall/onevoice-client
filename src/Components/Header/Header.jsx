@@ -3,7 +3,9 @@ import "./Header.scss";
 function Header() {
   return (
     <section className="header">
-      <p className="header__name">OneVoice</p>
+      <div className="footer__name-container">
+        <p className="header__name">OneVoice</p>
+      </div>
       <div className="footer__linebreak"></div>
     </section>
   );

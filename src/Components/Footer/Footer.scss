@@ -4,7 +4,12 @@
   align-items: center;
   padding: 2rem;
 
+  &__name-container {
+    width: 10rem;
+  }
+
   &__teamname {
+    font-size: 1rem;
   }
 
   &__linebreak {
