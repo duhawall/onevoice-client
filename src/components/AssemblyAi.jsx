@@ -1,3 +1,4 @@
+import "./AssemblyAi.scss";
 import React, { useState, useRef } from "react";
 
 export const TranscriptionComponent = () => {
@@ -8,6 +9,7 @@ export const TranscriptionComponent = () => {
   const sourceRef = useRef(null);
   const processorRef = useRef(null);
   const streamRef = useRef(null);
+  const [fontSize, setFontSize] = useState(16);
 
   const startRecording = async () => {
     try {
@@ -83,6 +85,7 @@ export const TranscriptionComponent = () => {
     }
   };
 
+
   const stopRecording = () => {
     // Clean up audio processing
     if (processorRef.current && sourceRef.current) {
@@ -129,6 +132,16 @@ export const TranscriptionComponent = () => {
     return btoa(binary);
   };
 
+  const handleIncreaseFont = () => {
+    setFontSize(prevFontSize => prevFontSize + 2)
+
+  };
+
+  const handleDecreaseFont = () => {
+    setFontSize(prevFontSize => prevFontSize - 2)
+
+  };
+
   return (
     <div>
       <h2>Real-time Transcription</h2>
@@ -137,7 +150,11 @@ export const TranscriptionComponent = () => {
       </button>
       <div>
         <h3>Transcript:</h3>
-        <p>{transcript}</p>
+        <p style={{ fontSize: `${fontSize}px` }}>{transcript}</p>
+        <div className="button__container">
+          <button className="button__font" onClick={handleIncreaseFont}>Increase Font Size</button>
+          <button className="button__font" onClick={handleDecreaseFont}>Decrease Font Size</button>
+        </div>
       </div>
     </div>
   );
