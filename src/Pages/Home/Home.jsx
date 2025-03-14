@@ -8,9 +8,9 @@ import { TranscriptionComponent } from "../../components/AssemblyAi";
 function Home() {
   const [isRecording, setIsRecording] = useState(false);
 
-  const handleRecording = () => {
-    setIsRecording(!isRecording);
-  };
+  // const handleRecording = () => {
+  //   setIsRecording(!isRecording);
+  // };
   return (
     <>
       <Header />
@@ -56,7 +56,10 @@ function Home() {
             >
               {isRecording ? "END RECORDING" : "START RECORDING"}
             </button> */}
-            <TranscriptionComponent />
+            <TranscriptionComponent
+              isRecording={isRecording}
+              setIsRecording={setIsRecording}
+            />
           </div>
         </div>
       </div>
