@@ -30,7 +30,7 @@ function Home() {
               d="M7 7v7H0V6.9c0-4.8 4.5-5.4 4.5-5.4l.6 1.4s-2 .3-2.4 1.9C2.3 6 3.1 7 3.1 7zm9 0v7H9V6.9c0-4.8 4.5-5.4 4.5-5.4l.6 1.4s-2 .3-2.4 1.9c-.4 1.2.4 2.2.4 2.2z"
             ></path>
           </svg>
-          <span>
+          <span id="transcriptionText">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, cum
             blanditiis. Quo minima dignissimos sed culpa ullam tempora, impedit
             minus officia provident est, enim accusantium. Dignissimos nesciunt
@@ -73,6 +73,20 @@ function Home() {
             </p>
           </div>
           <div className="body__action">
+            <button
+              className={
+                isRecording
+                  ? "button__copy-transcript"
+                  : "button__copy-transcript--off"
+              }
+              onClick={() =>
+                navigator.clipboard.writeText(
+                  document.getElementById("transcriptionText").innerText
+                )
+              }
+            >
+              Copy Transcription
+            </button>
             <button
               className={`body__action-record ${
                 isRecording ? "recording" : ""

@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-between;
     gap: 0.5rem;
-    padding: 4rem 0;
+    padding: 4rem 0 7rem 0;
 
     &--off {
       visibility: hidden;
@@ -74,9 +74,11 @@
 
   &__action {
     display: flex;
+    flex-direction: column;
     width: 100%;
     justify-content: flex-end;
     align-items: flex-end;
+    gap: 0.5rem;
     // padding-top: 450px;
     &-record {
       padding: 12px 24px;
@@ -100,5 +102,27 @@
         animation: pulse 1.5s infinite;
       }
     }
+  }
+}
+
+.button__copy-transcript {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #0078d4;
+  color: white;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background-color: #005ea6;
+    transform: scale(1.05);
+  }
+
+  &--off {
+    visibility: hidden;
   }
 }
