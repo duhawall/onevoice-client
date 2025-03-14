@@ -1,0 +1,23 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+
+  &__name-container {
+    width: 10rem;
+  }
+
+  &__teamname {
+    font-size: 1rem;
+    color: #6396f7;
+  }
+
+  &__linebreak {
+    width: 100%;
+    border-bottom: 2px solid #6396f7;
+  }
+}

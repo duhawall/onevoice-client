@@ -1,23 +1,41 @@
+import "./AssemblyAi.scss";
 import React, { useState, useRef } from "react";
 
+// websocket used instead of axios
+// because of real time transcription
+// websocket has a persistent connection (needed for a continuous stream of audio)
+// axios would be 100's of requests per min (as people pause when speaking)
+// app sends audio to server
+// receives text from server
+// does both in real time
+// websocket also responds immediately (preventing additional states like loading)
+
+// FINALLY it's just an AssemblyAi thing for streaming
+
 export const TranscriptionComponent = () => {
+  // satte vars to track transcribed text and recording status
   const [transcript, setTranscript] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  // refs below  maintain reference to audio processing (objects)
+  // these eneed to persist outside how React renders so it's a ref
   const socketRef = useRef(null);
   const audioContextRef = useRef(null);
   const sourceRef = useRef(null);
   const processorRef = useRef(null);
   const streamRef = useRef(null);
+  const [fontSize, setFontSize] = useState(16);
 
   const startRecording = async () => {
     try {
-      // Connect to backend WebSocket
+      // Connect to backend WebSocket (using websocket, stays open)
       socketRef.current = new WebSocket(`ws://localhost:8080`);
 
+      // this listens for any results from assemblyai (backend)
       socketRef.current.onmessage = (event) => {
         const data = JSON.parse(event.data);
         console.log("Received message:", data);
 
+        // assembly ai has in progress + final (when user stops talking)
         if (data.type === "transcript" && data.data.text) {
           console.log("Transcript data:", data.data);
 
@@ -37,26 +55,32 @@ export const TranscriptionComponent = () => {
       };
 
       // Get microphone stream
+      // this requests mic access w/ mediadevices api (browser built)
+      // returns the audio track and stores it in a ref (to clean up later)
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
-      // Create audio processing pipeline
+      // Create audio processing pipeline with web audio API
+      // audioContext processes at a medium quality rate
       const audioContext = new AudioContext({
         sampleRate: 16000, // Match AssemblyAI's expected sample rate
       });
       audioContextRef.current = audioContext;
 
+      // here we connect mic to audio processing system
       const source = audioContext.createMediaStreamSource(stream);
       sourceRef.current = source;
 
-      // Create script processor for raw audio access
+      // Create script processor for raw audio access; what Assembly wants
       const processor = audioContext.createScriptProcessor(4096, 1, 1);
       processorRef.current = processor;
 
+      // this forms the chain
       source.connect(processor);
       processor.connect(audioContext.destination);
 
       // Process and send audio data
+      // fires constantly on audio proceessing
       processor.onaudioprocess = (e) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
           // Get raw audio data
@@ -65,9 +89,10 @@ export const TranscriptionComponent = () => {
           // Convert Float32Array to Int16Array (format AssemblyAI expects)
           const pcmData = convertFloat32ToInt16(inputData);
 
-          // Convert to base64 for transmission
+          // Convert to base64 for transmission to Websocket (for safeety)
           const base64Audio = arrayBufferToBase64(pcmData.buffer);
 
+          // seend back to backend with json packets
           socketRef.current.send(
             JSON.stringify({
               type: "audio",
@@ -83,6 +108,7 @@ export const TranscriptionComponent = () => {
     }
   };
 
+  // disconnect nodes, closes websocket, updates ui
   const stopRecording = () => {
     // Clean up audio processing
     if (processorRef.current && sourceRef.current) {
@@ -109,6 +135,8 @@ export const TranscriptionComponent = () => {
   };
 
   // Helper function to convert Float32Array to Int16Array
+  // these 2 convert binary data to text based format
+
   const convertFloat32ToInt16 = (buffer) => {
     const l = buffer.length;
     const buf = new Int16Array(l);
@@ -129,6 +157,14 @@ export const TranscriptionComponent = () => {
     return btoa(binary);
   };
 
+  const handleIncreaseFont = () => {
+    setFontSize((prevFontSize) => prevFontSize + 2);
+  };
+
+  const handleDecreaseFont = () => {
+    setFontSize((prevFontSize) => prevFontSize - 2);
+  };
+
   return (
     <div>
       <h2>Real-time Transcription</h2>
@@ -137,7 +173,15 @@ export const TranscriptionComponent = () => {
       </button>
       <div>
         <h3>Transcript:</h3>
-        <p>{transcript}</p>
+        <p style={{ fontSize: `${fontSize}px` }}>{transcript}</p>
+        <div className="button__container">
+          <button className="button__font" onClick={handleIncreaseFont}>
+            Increase Font Size
+          </button>
+          <button className="button__font" onClick={handleDecreaseFont}>
+            Decrease Font Size
+          </button>
+        </div>
       </div>
     </div>
   );
