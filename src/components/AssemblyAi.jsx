@@ -13,10 +13,10 @@ import React, { useState, useRef } from "react";
 
 // FINALLY it's just an AssemblyAi thing for streaming
 
-export const TranscriptionComponent = () => {
+export const TranscriptionComponent = ({ isRecording, setIsRecording }) => {
   // satte vars to track transcribed text and recording status
   const [transcript, setTranscript] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
+  // const [isRecording, setIsRecording] = useState(false);
   // refs below  maintain reference to audio processing (objects)
   // these eneed to persist outside how React renders so it's a ref
   const socketRef = useRef(null);
@@ -146,6 +146,26 @@ export const TranscriptionComponent = () => {
     setFontSize((prevFontSize) => prevFontSize - 2);
   };
 
+  const convertFloat32ToInt16 = (buffer) => {
+    const l = buffer.length;
+    const buf = new Int16Array(l);
+    for (let i = 0; i < l; i++) {
+      // Convert float [-1.0, 1.0] to int [-32768, 32767]
+      buf[i] = Math.min(1, Math.max(-1, buffer[i])) * 0x7fff;
+    }
+    return buf;
+  };
+
+  // Helper function to convert ArrayBuffer to Base64
+  const arrayBufferToBase64 = (buffer) => {
+    const bytes = new Uint8Array(buffer);
+    let binary = "";
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }; // pure fnxn, I/O w. no side effects
+
   return (
     <>
       <h2>Real-time Transcription</h2>
@@ -170,23 +190,3 @@ export const TranscriptionComponent = () => {
     </>
   );
 };
-
-const convertFloat32ToInt16 = (buffer) => {
-  const l = buffer.length;
-  const buf = new Int16Array(l);
-  for (let i = 0; i < l; i++) {
-    // Convert float [-1.0, 1.0] to int [-32768, 32767]
-    buf[i] = Math.min(1, Math.max(-1, buffer[i])) * 0x7fff;
-  }
-  return buf;
-};
-
-// Helper function to convert ArrayBuffer to Base64
-const arrayBufferToBase64 = (buffer) => {
-  const bytes = new Uint8Array(buffer);
-  let binary = "";
-  for (let i = 0; i < bytes.length; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
-}; // pure fnxn, I/O w. no side effects
