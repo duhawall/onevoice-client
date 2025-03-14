@@ -57,7 +57,9 @@ function Home() {
           <div className={isRecording ? `body__text--recording` : `body__text`}>
             <img
               src={Logo}
-              className="body__text-logo"
+              className={
+                isRecording ? "body__text-logo--recording" : "body__text-logo"
+              }
               alt="Globe language logo"
             />
             <p
