@@ -10,7 +10,11 @@
   width: 100%;
 
   &__transcription {
+    display: flex;
+    flex-direction: column; // Ensuring column direction
+    align-items: center;
     padding: 4rem 0;
+
     &--off {
       visibility: hidden;
     }
@@ -18,15 +22,15 @@
 
   &__container {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: column; // Ensure it's a column flex
     width: 100%;
-  }
 
-  &__container--sloganbutton {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    &--sloganbutton {
+      display: flex;
+      flex-direction: column; // Change to column instead of row
+      align-items: center;
+      width: 100%;
+    }
   }
 
   &__text {
@@ -64,14 +68,102 @@
     display: flex;
     width: 100%;
     justify-content: flex-end;
-    align-items: flex-start;
-    flex-direction: column;
-    * {
-      padding-bottom: 1rem;
-    }
-
+    align-items: flex-end;
+    gap: 20px;
     // padding-top: 450px;
     &-record {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #0078d4;
+      color: white;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        background-color: #005ea6;
+        transform: scale(1.05);
+      }
+
+      &.recording {
+        background-color: #941616;
+        animation: pulse 1.5s infinite;
+      }
+    }
+
+    &-increase {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #0078d4;
+      color: white;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        background-color: #005ea6;
+        transform: scale(1.05);
+      }
+
+      &.recording {
+        background-color: rgb(0, 255, 76);
+        animation: pulse 1.5s infinite;
+      }
+    }
+
+    &-decrease {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #0078d4;
+      color: white;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        background-color: #005ea6;
+        transform: scale(1.05);
+      }
+
+      &.recording {
+        background-color: rgb(0, 255, 76);
+        animation: pulse 1.5s infinite;
+      }
+    }
+
+    &-clear {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #0078d4;
+      color: white;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        background-color: #005ea6;
+        transform: scale(1.05);
+      }
+
+      &.recording {
+        background-color: rgb(0, 255, 76);
+        animation: pulse 1.5s infinite;
+      }
+    }
+
+    &-download {
       padding: 12px 24px;
       font-size: 16px;
       font-weight: bold;
@@ -94,8 +186,4 @@
       }
     }
   }
-}
-
-.button__font {
-  padding: 0.5rem;
 }
