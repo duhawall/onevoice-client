@@ -25,7 +25,6 @@ export const TranscriptionComponent = () => {
   const processorRef = useRef(null);
   const streamRef = useRef(null);
   const [fontSize, setFontSize] = useState(16);
-  const [fontSize, setFontSize] = useState(16);
 
   const startRecording = async () => {
     try {
@@ -139,26 +138,6 @@ export const TranscriptionComponent = () => {
   // Helper function to convert Float32Array to Int16Array
   // these 2 convert binary data to text based format
 
-  const convertFloat32ToInt16 = (buffer) => {
-    const l = buffer.length;
-    const buf = new Int16Array(l);
-    for (let i = 0; i < l; i++) {
-      // Convert float [-1.0, 1.0] to int [-32768, 32767]
-      buf[i] = Math.min(1, Math.max(-1, buffer[i])) * 0x7fff;
-    }
-    return buf;
-  };
-
-  // Helper function to convert ArrayBuffer to Base64
-  const arrayBufferToBase64 = (buffer) => {
-    const bytes = new Uint8Array(buffer);
-    let binary = "";
-    for (let i = 0; i < bytes.length; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return btoa(binary);
-  };
-
   const handleIncreaseFont = () => {
     setFontSize((prevFontSize) => prevFontSize + 2);
   };
@@ -168,9 +147,12 @@ export const TranscriptionComponent = () => {
   };
 
   return (
-    <div>
+    <>
       <h2>Real-time Transcription</h2>
-      <button onClick={isRecording ? stopRecording : startRecording}>
+      <button
+        className={`body__action-record ${isRecording ? "recording" : ""}`}
+        onClick={isRecording ? stopRecording : startRecording}
+      >
         {isRecording ? "Stop Recording" : "Start Recording"}
       </button>
       <div>
@@ -185,6 +167,26 @@ export const TranscriptionComponent = () => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
+
+const convertFloat32ToInt16 = (buffer) => {
+  const l = buffer.length;
+  const buf = new Int16Array(l);
+  for (let i = 0; i < l; i++) {
+    // Convert float [-1.0, 1.0] to int [-32768, 32767]
+    buf[i] = Math.min(1, Math.max(-1, buffer[i])) * 0x7fff;
+  }
+  return buf;
+};
+
+// Helper function to convert ArrayBuffer to Base64
+const arrayBufferToBase64 = (buffer) => {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}; // pure fnxn, I/O w. no side effects

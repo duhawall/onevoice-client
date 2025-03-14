@@ -3,6 +3,7 @@ import Footer from "../../Components/Footer/Footer";
 import Header from "../../Components/Header/Header";
 import React, { useState } from "react";
 import Logo from "../../assets/styles/Images/Icons/languages.png";
+import { TranscriptionComponent } from "../../components/AssemblyAi";
 
 function Home() {
   const [isRecording, setIsRecording] = useState(false);
@@ -47,14 +48,15 @@ function Home() {
             </p>
           </div>
           <div className="body__action">
-            <button
-              className={`body__action-record ${
-                isRecording ? "recording" : ""
-              }`}
+            {/* <button
+                className={`body__action-record ${
+                  isRecording ? "recording" : ""
+                }`}
               onClick={handleRecording}
             >
               {isRecording ? "END RECORDING" : "START RECORDING"}
-            </button>
+            </button> */}
+            <TranscriptionComponent />
           </div>
         </div>
       </div>
