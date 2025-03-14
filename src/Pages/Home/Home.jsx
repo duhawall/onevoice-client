@@ -26,20 +26,29 @@ function Home() {
   const startRecording = async () => {
     try {
 
+      if (socketRef.current) {
+        socketRef.current.close(); // ✅ Close old WebSocket before opening a new one
+      }
+      
+
       socketRef.current = new WebSocket(`ws://localhost:8080`);
 
       socketRef.current.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        if (data.type === "transcript" && data.data.text) {
+        console.log("📥 Received WebSocket message:", data);
+      
+        if (data.type === "transcript") {
+          const newText = data.data.trim();
+      
           setTranscript((prev) => {
-            // Prevent duplicate transcript updates
-            if (prev.endsWith(data.data.text)) {
-              return prev; // Ignore duplicate update
+            if (prev.endsWith(newText)) {
+              return prev; 
             }
-            return prev + " " + data.data.text;
+            return prev + " " + newText;
           });
         }
       };
+      
       
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
