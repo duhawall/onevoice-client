@@ -1,4 +1,5 @@
 import "./AssemblyAi.scss";
+import "./AssemblyAi.scss";
 import React, { useState, useRef } from "react";
 
 // websocket used instead of axios
@@ -23,6 +24,7 @@ export const TranscriptionComponent = () => {
   const sourceRef = useRef(null);
   const processorRef = useRef(null);
   const streamRef = useRef(null);
+  const [fontSize, setFontSize] = useState(16);
   const [fontSize, setFontSize] = useState(16);
 
   const startRecording = async () => {
